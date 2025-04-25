@@ -39,13 +39,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
   const validateBody = (schema: z.ZodType<any, any>) => {
     return (req: Request, res: Response, next: Function) => {
       try {
+        console.log("Validating request body:", JSON.stringify(req.body));
         req.body = schema.parse(req.body);
+        console.log("Validation successful");
         next();
       } catch (error) {
         if (error instanceof ZodError) {
+          console.error("Validation error:", error);
           const validationError = fromZodError(error);
           return res.status(400).json({ message: validationError.message });
         }
+        console.error("Non-validation error:", error);
         next(error);
       }
     };
@@ -135,7 +139,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         
         res.status(201).json(course);
       } catch (error) {
-        res.status(500).json({ message: "Failed to create course" });
+        console.error("Course creation error:", error);
+        res.status(500).json({ message: `Failed to create course: ${error}` });
       }
     }
   );
