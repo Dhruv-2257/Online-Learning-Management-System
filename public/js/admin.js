@@ -1,4 +1,30 @@
 document.addEventListener('DOMContentLoaded', function() {
+  // Free vs Paid course toggle functionality
+  const freeCourseToggle = document.getElementById('free-course-toggle');
+  const priceContainer = document.getElementById('price-container');
+  const coursePriceInput = document.getElementById('course-price');
+  
+  // Function to toggle price field visibility
+  function updatePriceField() {
+    if (freeCourseToggle.checked) {
+      priceContainer.style.display = 'none';
+      coursePriceInput.value = '0';
+    } else {
+      priceContainer.style.display = 'block';
+      if (coursePriceInput.value === '0') {
+        coursePriceInput.value = '';
+      }
+    }
+  }
+  
+  // Initialize price field visibility
+  if (freeCourseToggle) {
+    updatePriceField();
+    
+    // Add event listener for toggle changes
+    freeCourseToggle.addEventListener('change', updatePriceField);
+  }
+
   // Tab switching functionality
   const tabNavItems = document.querySelectorAll('.tab-nav-item');
   const tabContents = document.querySelectorAll('.tab-content');
@@ -187,6 +213,14 @@ document.addEventListener('DOMContentLoaded', function() {
           document.getElementById('course-content').value = course.content;
           document.getElementById('course-status').value = course.status;
           
+          // Set free course toggle based on course price
+          const freeToggle = document.getElementById('free-course-toggle');
+          if (freeToggle) {
+            const isFree = !course.price || course.price === '0';
+            freeToggle.checked = isFree;
+            updatePriceField(); // Update price field visibility
+          }
+          
           // Update modal title and button text
           document.getElementById('course-modal-title').textContent = 'Edit Course';
           document.getElementById('save-course-btn').textContent = 'Save Changes';
@@ -249,6 +283,13 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('course-price').value = '0';
     document.getElementById('course-content').value = '';
     document.getElementById('course-status').value = 'draft';
+    
+    // Reset free course toggle
+    const freeToggle = document.getElementById('free-course-toggle');
+    if (freeToggle) {
+      freeToggle.checked = true;
+      updatePriceField(); // Update price field visibility
+    }
     
     const errorElements = courseForm.querySelectorAll('.error-message');
     errorElements.forEach(el => {

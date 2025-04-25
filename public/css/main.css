@@ -406,6 +406,27 @@ html[data-theme="dark"] #theme-dark-icon {
   margin-bottom: 1.5rem;
 }
 
+/* Checkbox container styling */
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  cursor: pointer;
+}
+
+.checkbox-container input[type="checkbox"] {
+  margin-right: 0.5rem;
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
+.checkbox-container label {
+  cursor: pointer;
+  font-weight: 500;
+  user-select: none;
+}
+
 .form-row {
   display: flex;
   gap: 1rem;
