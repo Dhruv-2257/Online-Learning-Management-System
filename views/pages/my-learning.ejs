@@ -39,11 +39,6 @@
                         <div class="enrollment-status in-progress">In Progress</div>
                         <a href="/course/<%= course.id %>" class="btn btn-primary btn-sm">Continue</a>
                       </div>
-                      <% if (parseFloat(course.price) > 0) { %>
-                        <div class="course-price" style="margin-top: 0.5rem;">
-                          <span data-usd-price="<%= course.price %>">₹<%= Math.round(course.price * 83.5) %></span>
-                        </div>
-                      <% } %>
                     </div>
                   </div>
                 <% } %>
@@ -82,11 +77,6 @@
                         <div class="enrollment-status completed">Completed</div>
                         <a href="/course/<%= course.id %>" class="btn btn-outline btn-sm">Review</a>
                       </div>
-                      <% if (parseFloat(course.price) > 0) { %>
-                        <div class="course-price" style="margin-top: 0.5rem;">
-                          <span data-usd-price="<%= course.price %>">₹<%= Math.round(course.price * 83.5) %></span>
-                        </div>
-                      <% } %>
                     </div>
                   </div>
                 <% } %>

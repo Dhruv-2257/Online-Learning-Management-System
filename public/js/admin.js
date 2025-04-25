@@ -116,25 +116,12 @@ document.addEventListener('DOMContentLoaded', function() {
       if (hasErrors) return;
       
       // Prepare course data
-      // Check if we need to convert currency from INR to USD
-      let priceUSD = parseFloat(price) || 0;
-      
-      // If we're showing INR prices globally and have a conversion rate
-      if (typeof window.currency !== 'undefined' && 
-          window.currency === 'INR' && 
-          typeof window.conversionRate !== 'undefined') {
-        // Convert back to USD for storage
-        priceUSD = priceUSD / window.conversionRate;
-        // Round to 2 decimal places
-        priceUSD = Math.round(priceUSD * 100) / 100;
-      }
-      
       const courseData = {
         title,
         description,
         image,
         categoryId: categoryId ? parseInt(categoryId) : null,
-        price: priceUSD,
+        price: parseFloat(price) || 0,
         content,
         status
       };
@@ -196,15 +183,7 @@ document.addEventListener('DOMContentLoaded', function() {
           document.getElementById('course-description').value = course.description;
           document.getElementById('course-image').value = course.image || '';
           document.getElementById('course-category').value = course.categoryId || '';
-          // Handle potential currency conversion for display
-          let displayPrice = course.price;
-          if (typeof window.currency !== 'undefined' && 
-              window.currency === 'INR' && 
-              typeof window.conversionRate !== 'undefined') {
-            // Convert USD to INR for display
-            displayPrice = (course.price * window.conversionRate).toFixed(0);
-          }
-          document.getElementById('course-price').value = displayPrice;
+          document.getElementById('course-price').value = course.price;
           document.getElementById('course-content').value = course.content;
           document.getElementById('course-status').value = course.status;
           
