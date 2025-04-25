@@ -3,7 +3,7 @@ const USD_TO_INR_FIXED_RATE = 83.5; // Fixed exchange rate as fallback
 const CURRENCY_API_URL = 'https://api.exchangerate-api.com/v4/latest/USD';
 
 // Settings
-let currency = localStorage.getItem('currency') || 'USD'; // Default to USD
+let currency = 'INR'; // Always use INR
 let conversionRate = USD_TO_INR_FIXED_RATE; // Default rate
 let lastFetchTime = 0;
 const CACHE_DURATION = 3600000; // 1 hour in milliseconds
@@ -29,21 +29,12 @@ function formatINR(price) {
   return `₹${Math.round(inrPrice)}`;
 }
 
-// Function to format price based on selected currency
+// Function to format price - always in INR
 function formatPrice(price) {
-  if (currency === 'INR') {
-    return formatINR(price);
-  } else {
-    return formatUSD(price);
-  }
+  return formatINR(price);
 }
 
-// Function to toggle currency
-function toggleCurrency() {
-  currency = currency === 'USD' ? 'INR' : 'USD';
-  localStorage.setItem('currency', currency);
-  updateAllPrices();
-}
+// No toggle function needed - always using INR
 
 // Function to update all price displays on the page
 function updateAllPrices() {
@@ -63,33 +54,14 @@ function updateAllPrices() {
     // Update the displayed price based on the current currency setting
     element.textContent = formatPrice(usdPrice);
     
-    // Update the class for styling
-    if (currency === 'INR') {
-      element.classList.add('price-inr');
-      element.classList.remove('price-usd');
-    } else {
-      element.classList.add('price-usd');
-      element.classList.remove('price-inr');
-    }
+    // Always use INR styling
+    element.classList.add('price-inr');
+    element.classList.remove('price-usd');
   });
   
-  // Update currency toggle button if it exists
-  const currencyToggleBtn = document.getElementById('currency-toggle');
-  if (currencyToggleBtn) {
-    currencyToggleBtn.textContent = `Switch to ${currency === 'USD' ? 'INR' : 'USD'}`;
-  }
+  // No toggle button in this implementation
   
-  // Update admin form currency label if it exists
-  const currencyLabel = document.getElementById('currency-label');
-  if (currencyLabel) {
-    currencyLabel.textContent = `(${currency})`;
-  }
-  
-  // Update admin form price symbol if it exists
-  const priceCurrencySymbol = document.getElementById('price-currency-symbol');
-  if (priceCurrencySymbol) {
-    priceCurrencySymbol.textContent = currency === 'INR' ? '₹' : '$';
-  }
+  // Admin form always shows INR
   
   // Make currency conversion rate available globally for other scripts
   window.currency = currency;
@@ -133,22 +105,7 @@ function initCurrencyConversion() {
     lastFetchTime = parseInt(cachedTimestamp);
   }
   
-  // Create currency toggle button if it doesn't exist
-  if (!document.getElementById('currency-toggle')) {
-    const headerActions = document.querySelector('.header-actions');
-    
-    if (headerActions) {
-      const toggleBtn = document.createElement('button');
-      toggleBtn.id = 'currency-toggle';
-      toggleBtn.className = 'btn btn-outline btn-sm';
-      toggleBtn.textContent = `Switch to ${currency === 'USD' ? 'INR' : 'USD'}`;
-      toggleBtn.style.marginRight = '0.5rem';
-      toggleBtn.addEventListener('click', toggleCurrency);
-      
-      // Insert before the first child of header-actions
-      headerActions.insertBefore(toggleBtn, headerActions.firstChild);
-    }
-  }
+  // No toggle button needed, always using INR
   
   // Initial fetch of conversion rates and update prices
   fetchConversionRates();
