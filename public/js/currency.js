@@ -47,7 +47,7 @@ function updateAllPrices() {
     
     // If the data attribute doesn't exist yet, store the original price and remove the currency symbol
     if (!usdPrice) {
-      usdPrice = element.textContent.replace('$', '').trim();
+      usdPrice = element.textContent.replace('$', '').replace('₹', '').trim();
       element.setAttribute('data-usd-price', usdPrice);
     }
     
