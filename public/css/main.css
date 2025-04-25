@@ -465,6 +465,11 @@ input:focus, textarea:focus, select:focus {
   padding-left: 1.5rem;
 }
 
+.price-inr::before {
+  content: "₹";
+  margin-right: 0.1rem;
+}
+
 .error-message {
   color: var(--error-color);
   font-size: 0.875rem;
