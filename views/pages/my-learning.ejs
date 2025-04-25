@@ -1,0 +1,109 @@
+<%- include('../partials/header') %>
+
+<div class="container">
+  <div class="my-learning-header">
+    <h1>My Learning</h1>
+  </div>
+  
+  <% if (enrollments && enrollments.length > 0) { %>
+    <div class="enrolled-courses">
+      <div class="tabs" id="enrollment-tabs">
+        <div class="tab-nav">
+          <button class="tab-nav-item active" data-tab="in-progress">In Progress</button>
+          <button class="tab-nav-item" data-tab="completed">Completed</button>
+        </div>
+        
+        <div id="in-progress-tab" class="tab-content active">
+          <div class="courses-grid">
+            <% 
+            const inProgressEnrollments = enrollments.filter(e => e.status === 'in_progress');
+            if (inProgressEnrollments.length > 0) { 
+            %>
+              <% inProgressEnrollments.forEach(function(enrollment) { %>
+                <% const course = courses.find(c => c.id === enrollment.courseId); %>
+                <% if (course) { %>
+                  <div class="course-card">
+                    <div class="course-card-image">
+                      <img src="<%= course.image %>" alt="<%= course.title %>">
+                    </div>
+                    <div class="course-card-content">
+                      <% if (course.categoryId) { %>
+                        <% const category = categories.find(c => c.id === course.categoryId); %>
+                        <div class="course-category"><%= category ? category.name : 'Uncategorized' %></div>
+                      <% } else { %>
+                        <div class="course-category">Uncategorized</div>
+                      <% } %>
+                      <h3 class="course-title"><%= course.title %></h3>
+                      <p class="course-description"><%= course.description %></p>
+                      <div class="course-meta">
+                        <div class="enrollment-status in-progress">In Progress</div>
+                        <a href="/course/<%= course.id %>" class="btn btn-primary btn-sm">Continue</a>
+                      </div>
+                    </div>
+                  </div>
+                <% } %>
+              <% }); %>
+            <% } else { %>
+              <div class="no-courses-message">
+                <p>You don't have any courses in progress.</p>
+              </div>
+            <% } %>
+          </div>
+        </div>
+        
+        <div id="completed-tab" class="tab-content">
+          <div class="courses-grid">
+            <% 
+            const completedEnrollments = enrollments.filter(e => e.status === 'completed');
+            if (completedEnrollments.length > 0) { 
+            %>
+              <% completedEnrollments.forEach(function(enrollment) { %>
+                <% const course = courses.find(c => c.id === enrollment.courseId); %>
+                <% if (course) { %>
+                  <div class="course-card">
+                    <div class="course-card-image">
+                      <img src="<%= course.image %>" alt="<%= course.title %>">
+                    </div>
+                    <div class="course-card-content">
+                      <% if (course.categoryId) { %>
+                        <% const category = categories.find(c => c.id === course.categoryId); %>
+                        <div class="course-category"><%= category ? category.name : 'Uncategorized' %></div>
+                      <% } else { %>
+                        <div class="course-category">Uncategorized</div>
+                      <% } %>
+                      <h3 class="course-title"><%= course.title %></h3>
+                      <p class="course-description"><%= course.description %></p>
+                      <div class="course-meta">
+                        <div class="enrollment-status completed">Completed</div>
+                        <a href="/course/<%= course.id %>" class="btn btn-outline btn-sm">Review</a>
+                      </div>
+                    </div>
+                  </div>
+                <% } %>
+              <% }); %>
+            <% } else { %>
+              <div class="no-courses-message">
+                <p>You haven't completed any courses yet.</p>
+              </div>
+            <% } %>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% } else { %>
+    <div class="no-enrollments">
+      <div class="empty-state">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-book-open">
+          <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+          <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+        </svg>
+        <h2>No Enrolled Courses</h2>
+        <p>You haven't enrolled in any courses yet. Browse our course catalog to get started.</p>
+        <a href="/" class="btn btn-primary">Browse Courses</a>
+      </div>
+    </div>
+  <% } %>
+</div>
+
+<% const pageScripts = ['my-learning.js']; %>
+<%- include('../partials/footer', { scripts: pageScripts }) %>

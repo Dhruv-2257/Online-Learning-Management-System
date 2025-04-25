@@ -1,0 +1,247 @@
+<%- include('../partials/header') %>
+
+<div class="container">
+  <div class="admin-header">
+    <h1>Admin Dashboard</h1>
+    <button id="create-course-btn" class="btn btn-primary">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+      Create New Course
+    </button>
+  </div>
+  
+  <!-- Stats dashboard -->
+  <div class="stat-cards">
+    <div class="stat-card">
+      <h3>Total Courses</h3>
+      <p class="stat-value"><%= courses.length %></p>
+    </div>
+    <div class="stat-card">
+      <h3>Published Courses</h3>
+      <p class="stat-value"><%= courses.filter(c => c.status === 'published').length %></p>
+    </div>
+    <div class="stat-card">
+      <h3>Total Students</h3>
+      <p class="stat-value"><%= users.filter(u => u.role === 'user').length %></p>
+    </div>
+    <div class="stat-card">
+      <h3>Total Enrollments</h3>
+      <p class="stat-value"><%= enrollments.length %></p>
+    </div>
+  </div>
+  
+  <!-- Admin tabs -->
+  <div class="tabs" id="admin-tabs">
+    <div class="tab-nav">
+      <button class="tab-nav-item active" data-tab="courses">Courses</button>
+      <button class="tab-nav-item" data-tab="students">Students</button>
+    </div>
+    
+    <!-- Courses Tab -->
+    <div id="courses-tab" class="tab-content active">
+      <div class="table-wrapper">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Course</th>
+              <th>Category</th>
+              <th>Students</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% courses.forEach(function(course) { %>
+              <tr data-course-id="<%= course.id %>">
+                <td>
+                  <div class="course-cell">
+                    <% if (course.image) { %>
+                      <img src="<%= course.image %>" alt="<%= course.title %>" class="course-thumbnail">
+                    <% } else { %>
+                      <div class="course-thumbnail-placeholder"></div>
+                    <% } %>
+                    <div class="course-info">
+                      <div class="course-title"><%= course.title %></div>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <% if (course.categoryId) { %>
+                    <% const category = categories.find(c => c.id === course.categoryId); %>
+                    <%= category ? category.name : 'Uncategorized' %>
+                  <% } else { %>
+                    Uncategorized
+                  <% } %>
+                </td>
+                <td>
+                  <% const courseEnrollments = enrollments.filter(e => e.courseId === course.id); %>
+                  <%= courseEnrollments.length %>
+                </td>
+                <td>
+                  <span class="status-badge <%= course.status === 'published' ? 'status-published' : 'status-draft' %>">
+                    <%= course.status === 'published' ? 'Published' : 'Draft' %>
+                  </span>
+                </td>
+                <td>
+                  <div class="action-buttons">
+                    <button class="btn btn-icon edit-course-btn" data-course-id="<%= course.id %>">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>
+                    </button>
+                    <button class="btn btn-icon delete-course-btn" data-course-id="<%= course.id %>">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    
+    <!-- Students Tab -->
+    <div id="students-tab" class="tab-content">
+      <div class="table-wrapper">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Student</th>
+              <th>Email</th>
+              <th>Joined</th>
+              <th>Enrolled Courses</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% 
+            const students = users.filter(u => u.role === 'user');
+            students.forEach(function(student) { 
+            %>
+              <tr>
+                <td>
+                  <div class="user-cell">
+                    <div class="user-avatar">
+                      <%= student.firstName ? student.firstName.charAt(0).toUpperCase() : (student.username ? student.username.charAt(0).toUpperCase() : 'U') %>
+                    </div>
+                    <div class="user-info">
+                      <div class="user-name">
+                        <% if (student.firstName || student.lastName) { %>
+                          <%= `${student.firstName || ''} ${student.lastName || ''}`.trim() %>
+                        <% } else { %>
+                          <%= student.username %>
+                        <% } %>
+                      </div>
+                      <div class="user-username"><%= student.username %></div>
+                    </div>
+                  </div>
+                </td>
+                <td><%= student.email %></td>
+                <td><%= new Date(student.createdAt).toLocaleDateString() %></td>
+                <td>
+                  <% const studentEnrollments = enrollments.filter(e => e.userId === student.id); %>
+                  <%= studentEnrollments.length %> courses
+                </td>
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Course Form Modal -->
+<div id="course-modal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 id="course-modal-title">Create New Course</h2>
+      <button class="close-modal">&times;</button>
+    </div>
+    <div class="modal-body">
+      <form id="course-form">
+        <input type="hidden" id="course-id">
+        
+        <div class="form-group">
+          <label for="course-title">Course Title</label>
+          <input type="text" id="course-title" name="title" required>
+          <div class="error-message" id="title-error"></div>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label for="course-category">Category</label>
+            <select id="course-category" name="categoryId">
+              <option value="">Select a category</option>
+              <% categories.forEach(function(category) { %>
+                <option value="<%= category.id %>"><%= category.name %></option>
+              <% }); %>
+            </select>
+            <div class="error-message" id="category-error"></div>
+          </div>
+          
+          <div class="form-group">
+            <label for="course-price">Price</label>
+            <div class="price-input">
+              <span class="price-symbol">$</span>
+              <input type="text" id="course-price" name="price" value="0">
+            </div>
+            <div class="error-message" id="price-error"></div>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="course-description">Description</label>
+          <textarea id="course-description" name="description" rows="3" required></textarea>
+          <div class="error-message" id="description-error"></div>
+        </div>
+        
+        <div class="form-group">
+          <label for="course-image">Image URL</label>
+          <input type="text" id="course-image" name="image" placeholder="https://example.com/image.jpg">
+          <div class="error-message" id="image-error"></div>
+        </div>
+        
+        <div class="form-group">
+          <label for="course-content">Course Content (Markdown)</label>
+          <textarea id="course-content" name="content" rows="10" required></textarea>
+          <div class="error-message" id="content-error"></div>
+        </div>
+        
+        <div class="form-group">
+          <label for="course-status">Status</label>
+          <select id="course-status" name="status" required>
+            <option value="draft">Draft</option>
+            <option value="published">Published</option>
+          </select>
+          <div class="error-message" id="status-error"></div>
+        </div>
+        
+        <div class="error-message" id="form-error"></div>
+        
+        <div class="form-actions">
+          <button type="button" class="btn btn-outline" id="cancel-course-btn">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="save-course-btn">Save Course</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div id="delete-modal" class="modal">
+  <div class="modal-content modal-sm">
+    <div class="modal-header">
+      <h2>Confirm Deletion</h2>
+      <button class="close-modal">&times;</button>
+    </div>
+    <div class="modal-body">
+      <p>Are you sure you want to delete this course? This action cannot be undone, and all enrollments will be lost.</p>
+      
+      <div class="form-actions">
+        <button type="button" class="btn btn-outline" id="cancel-delete-btn">Cancel</button>
+        <button type="button" class="btn btn-danger" id="confirm-delete-btn">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<% const pageScripts = ['marked.min.js', 'admin.js']; %>
+<%- include('../partials/footer', { scripts: pageScripts }) %>

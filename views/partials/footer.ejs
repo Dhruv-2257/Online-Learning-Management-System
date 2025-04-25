@@ -1,0 +1,55 @@
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-logo">
+          <h3>LearnEase</h3>
+          <p>Simple, intuitive learning management system.</p>
+        </div>
+        <div class="footer-links">
+          <div class="footer-column">
+            <h4>Platform</h4>
+            <ul>
+              <li><a href="/">Home</a></li>
+              <li><a href="/courses">Courses</a></li>
+              <% if (user) { %>
+                <li><a href="/my-learning">My Learning</a></li>
+              <% } %>
+            </ul>
+          </div>
+          <div class="footer-column">
+            <h4>Support</h4>
+            <ul>
+              <li><a href="#">Help Center</a></li>
+              <li><a href="#">FAQ</a></li>
+              <li><a href="#">Contact Us</a></li>
+            </ul>
+          </div>
+          <div class="footer-column">
+            <h4>Legal</h4>
+            <ul>
+              <li><a href="#">Terms of Service</a></li>
+              <li><a href="#">Privacy Policy</a></li>
+              <li><a href="#">Cookie Policy</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; <%= new Date().getFullYear() %> LearnEase. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Main JavaScript bundle -->
+  <script src="/js/main.js"></script>
+  
+  <!-- Custom page scripts can be included here -->
+  <% if (typeof scripts !== 'undefined' && scripts.length > 0) { %>
+    <% scripts.forEach(function(script) { %>
+      <script src="/js/<%= script %>"></script>
+    <% }); %>
+  <% } %>
+</body>
+</html>

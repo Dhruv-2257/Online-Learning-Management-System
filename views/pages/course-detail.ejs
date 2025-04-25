@@ -1,0 +1,88 @@
+<%- include('../partials/header') %>
+
+<div class="container">
+  <div class="course-detail">
+    <div class="course-header">
+      <div class="breadcrumbs">
+        <a href="/">Courses</a> / <span><%= course.title %></span>
+      </div>
+      <h1><%= course.title %></h1>
+      <p class="course-description"><%= course.description %></p>
+      <div class="course-meta">
+        <% if (course.categoryId) { %>
+          <% const category = categories.find(c => c.id === course.categoryId); %>
+          <div class="course-category"><%= category ? category.name : 'Uncategorized' %></div>
+        <% } else { %>
+          <div class="course-category">Uncategorized</div>
+        <% } %>
+        
+        <% if (instructor) { %>
+          <div class="instructor">
+            <span>Instructor: </span>
+            <strong><%= instructor.firstName || instructor.username %></strong>
+          </div>
+        <% } %>
+      </div>
+    </div>
+
+    <div class="course-content-wrapper">
+      <div class="course-content">
+        <div class="content-markdown" id="course-content">
+          <!-- Content will be rendered here by JavaScript -->
+        </div>
+      </div>
+      
+      <div class="course-sidebar">
+        <div class="course-sidebar-card">
+          <% if (course.image) { %>
+            <div class="course-image">
+              <img src="<%= course.image %>" alt="<%= course.title %>">
+            </div>
+          <% } %>
+          
+          <div class="course-price-box">
+            <% if (parseFloat(course.price) === 0) { %>
+              <div class="price free">Free</div>
+            <% } else { %>
+              <div class="price">$<%= course.price %></div>
+            <% } %>
+            
+            <% if (isEnrolled) { %>
+              <div class="enrolled-badge">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                Enrolled
+              </div>
+              <a href="/my-learning" class="btn btn-primary btn-full">Continue Learning</a>
+            <% } else { %>
+              <% if (user) { %>
+                <button id="enroll-btn" class="btn btn-primary btn-full" data-course-id="<%= course.id %>">Enroll Now</button>
+              <% } else { %>
+                <a href="/auth?redirect=/course/<%= course.id %>" class="btn btn-primary btn-full">Login to Enroll</a>
+              <% } %>
+            <% } %>
+          </div>
+          
+          <div class="course-info">
+            <h3>Course Information</h3>
+            <ul>
+              <li>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                <span>Updated: <%= new Date(course.updatedAt).toLocaleDateString() %></span>
+              </li>
+              <li>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                <span><%= enrollmentsCount %> students enrolled</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Hidden course content for JavaScript parsing -->
+<div id="course-content-data" style="display: none;" data-content="<%= encodeURIComponent(course.content) %>"></div>
+
+<% const pageScripts = ['marked.min.js', 'highlight.min.js', 'course-detail.js']; %>
+<%- include('../partials/footer', { scripts: pageScripts }) %>

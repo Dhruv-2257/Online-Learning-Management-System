@@ -1,0 +1,63 @@
+<%- include('../partials/header') %>
+
+<div class="container">
+  <div class="courses-header">
+    <h1>Explore Courses</h1>
+    <div class="search-filter">
+      <div class="search-input">
+        <input type="text" id="search-courses" placeholder="Search courses...">
+        <button id="search-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </button>
+      </div>
+      <div class="filter-dropdown">
+        <select id="category-filter">
+          <option value="">All Categories</option>
+          <% categories.forEach(function(category) { %>
+            <option value="<%= category.id %>"><%= category.name %></option>
+          <% }); %>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="courses-grid" id="courses-grid">
+    <% courses.forEach(function(course) { %>
+      <div class="course-card" data-category="<%= course.categoryId %>">
+        <div class="course-card-image">
+          <img src="<%= course.image %>" alt="<%= course.title %>">
+        </div>
+        <div class="course-card-content">
+          <% if (course.categoryId) { %>
+            <% const category = categories.find(c => c.id === course.categoryId); %>
+            <div class="course-category"><%= category ? category.name : 'Uncategorized' %></div>
+          <% } else { %>
+            <div class="course-category">Uncategorized</div>
+          <% } %>
+          <h3 class="course-title"><%= course.title %></h3>
+          <p class="course-description"><%= course.description %></p>
+          <div class="course-meta">
+            <div class="course-price">
+              <% if (parseFloat(course.price) === 0) { %>
+                <span class="free">Free</span>
+              <% } else { %>
+                <span>$<%= course.price %></span>
+              <% } %>
+            </div>
+            <a href="/course/<%= course.id %>" class="btn btn-primary btn-sm">View Course</a>
+          </div>
+        </div>
+      </div>
+    <% }); %>
+  </div>
+
+  <div id="no-courses-message" class="hidden">
+    <p>No courses found. Try adjusting your search or filter.</p>
+  </div>
+</div>
+
+<% const pageScripts = ['courses.js']; %>
+<%- include('../partials/footer', { scripts: pageScripts }) %>

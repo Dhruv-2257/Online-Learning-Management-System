@@ -1,0 +1,126 @@
+<%- include('../partials/header') %>
+
+<div class="auth-container">
+  <div class="auth-grid">
+    <div class="auth-form-container">
+      <h2>Welcome to LearnEase</h2>
+      <p class="auth-subtitle">Sign in to your account or create a new one</p>
+      
+      <div class="tabs" id="auth-tabs">
+        <div class="tab-nav">
+          <button class="tab-nav-item active" data-tab="login">Login</button>
+          <button class="tab-nav-item" data-tab="register">Register</button>
+        </div>
+        
+        <!-- Login Form -->
+        <div id="login-tab" class="tab-content active">
+          <form id="login-form" class="auth-form">
+            <div class="form-group">
+              <label for="login-email">Email address</label>
+              <input type="email" id="login-email" name="email" placeholder="your@email.com" required>
+              <div class="error-message" id="login-email-error"></div>
+            </div>
+            
+            <div class="form-group">
+              <label for="login-password">Password</label>
+              <input type="password" id="login-password" name="password" placeholder="••••••••" required>
+              <div class="error-message" id="login-password-error"></div>
+            </div>
+            
+            <div class="form-row">
+              <div class="checkbox-group">
+                <input type="checkbox" id="remember-me" name="rememberMe">
+                <label for="remember-me">Remember me</label>
+              </div>
+              <a href="#" class="text-link">Forgot password?</a>
+            </div>
+            
+            <div class="error-message" id="login-form-error"></div>
+            
+            <button type="submit" class="btn btn-primary btn-full">Log In</button>
+          </form>
+        </div>
+        
+        <!-- Register Form -->
+        <div id="register-tab" class="tab-content">
+          <form id="register-form" class="auth-form">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="first-name">First name</label>
+                <input type="text" id="first-name" name="firstName" placeholder="John">
+                <div class="error-message" id="first-name-error"></div>
+              </div>
+              <div class="form-group">
+                <label for="last-name">Last name</label>
+                <input type="text" id="last-name" name="lastName" placeholder="Doe">
+                <div class="error-message" id="last-name-error"></div>
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label for="username">Username</label>
+              <input type="text" id="username" name="username" placeholder="johndoe" required>
+              <div class="error-message" id="username-error"></div>
+            </div>
+            
+            <div class="form-group">
+              <label for="register-email">Email address</label>
+              <input type="email" id="register-email" name="email" placeholder="your@email.com" required>
+              <div class="error-message" id="register-email-error"></div>
+            </div>
+            
+            <div class="form-group">
+              <label for="register-password">Password</label>
+              <input type="password" id="register-password" name="password" placeholder="••••••••" required>
+              <div class="error-message" id="register-password-error"></div>
+            </div>
+            
+            <div class="form-group">
+              <label for="confirm-password">Confirm password</label>
+              <input type="password" id="confirm-password" name="confirmPassword" placeholder="••••••••" required>
+              <div class="error-message" id="confirm-password-error"></div>
+            </div>
+            
+            <div class="checkbox-group">
+              <input type="checkbox" id="terms" name="terms" required>
+              <label for="terms">I agree to the <a href="#" class="text-link">Terms of Service</a> and <a href="#" class="text-link">Privacy Policy</a></label>
+              <div class="error-message" id="terms-error"></div>
+            </div>
+            
+            <div class="error-message" id="register-form-error"></div>
+            
+            <button type="submit" class="btn btn-primary btn-full">Create Account</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    
+    <div class="auth-hero">
+      <div class="auth-hero-content">
+        <h1>Start your learning journey today</h1>
+        <p>Access a wide range of courses, track your progress, and achieve your learning goals with our simple, intuitive learning management system.</p>
+        <ul class="feature-list">
+          <li>
+            <div class="feature-icon">✓</div>
+            <span>Beginner-friendly interface</span>
+          </li>
+          <li>
+            <div class="feature-icon">✓</div>
+            <span>Access to quality courses</span>
+          </li>
+          <li>
+            <div class="feature-icon">✓</div>
+            <span>Track your learning progress</span>
+          </li>
+          <li>
+            <div class="feature-icon">✓</div>
+            <span>Dark mode support</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<% const pageScripts = ['auth.js']; %>
+<%- include('../partials/footer', { scripts: pageScripts }) %>
