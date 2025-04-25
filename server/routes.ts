@@ -320,6 +320,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Set up view routes (for server-side rendering with EJS)
+  registerViewRoutes(app);
+  
   const httpServer = createServer(app);
   return httpServer;
 }
