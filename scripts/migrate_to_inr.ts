@@ -20,7 +20,9 @@ async function migrateToINR() {
         continue;
       }
       
-      const usdPrice = parseFloat(course.price);
+      // Make sure price is a string and never null
+      const priceString = typeof course.price === 'string' ? course.price : "0";
+      const usdPrice = parseFloat(priceString);
       // Convert to INR (approximate rate: 1 USD = 84 INR)
       const inrPrice = Math.round(usdPrice * 84);
       

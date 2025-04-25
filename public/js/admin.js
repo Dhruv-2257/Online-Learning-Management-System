@@ -121,7 +121,7 @@ document.addEventListener('DOMContentLoaded', function() {
         description,
         image,
         categoryId: categoryId ? parseInt(categoryId) : null,
-        price: parseFloat(price) || 0,
+        price: price || "0", // Keep as string for the database
         content,
         status
       };
