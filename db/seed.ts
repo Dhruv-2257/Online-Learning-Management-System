@@ -117,7 +117,7 @@ async function seed() {
         title: "JavaScript Masterclass",
         description: "Advanced JavaScript concepts including ES6+, async/await, and modern frameworks.",
         image: "https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-        price: "49.99",
+        price: "4199", // INR pricing instead of USD
         instructorId: mark.id,
         categoryId: jsCategoryId,
         status: "published",
@@ -130,7 +130,7 @@ async function seed() {
         title: "React for Beginners",
         description: "Learn React from scratch and build modern web applications with hooks and context.",
         image: "https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-        price: "39.99",
+        price: "3399", // INR pricing instead of USD
         instructorId: emma.id,
         categoryId: reactCategoryId,
         status: "published",

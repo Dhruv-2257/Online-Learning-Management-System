@@ -459,6 +459,7 @@ input:focus, textarea:focus, select:focus {
   top: 50%;
   transform: translateY(-50%);
   color: var(--text-muted);
+  font-family: Arial, sans-serif; /* Ensure proper display of the ₹ symbol */
 }
 
 .price-input input {
