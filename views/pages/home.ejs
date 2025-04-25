@@ -44,7 +44,7 @@
               <% if (parseFloat(course.price) === 0) { %>
                 <span class="free">Free</span>
               <% } else { %>
-                <span data-usd-price="<%= course.price %>">$<%= course.price %></span>
+                <span data-usd-price="<%= course.price %>">₹<%= Math.round(course.price * 83.5) %></span>
               <% } %>
             </div>
             <a href="/course/<%= course.id %>" class="btn btn-primary btn-sm">View Course</a>
