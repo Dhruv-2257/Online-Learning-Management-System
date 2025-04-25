@@ -94,7 +94,7 @@ export const insertCategorySchema = createInsertSchema(categories, {
 export const insertCourseSchema = createInsertSchema(courses, {
   title: (schema) => schema.min(5, "Title must be at least 5 characters"),
   description: (schema) => schema.min(10, "Description must be at least 10 characters"),
-}).omit({ createdAt: true, updatedAt: true });
+}).omit({ createdAt: true, updatedAt: true, instructorId: true });
 
 export const insertEnrollmentSchema = createInsertSchema(enrollments, {}).omit({ enrolledAt: true });
 
