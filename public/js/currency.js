@@ -1,10 +1,9 @@
 // Constants
-const USD_TO_INR_FIXED_RATE = 83.5; // Fixed exchange rate as fallback
-const CURRENCY_API_URL = 'https://api.exchangerate-api.com/v4/latest/USD';
+const USD_TO_INR_FIXED_RATE = 83.5; // Fixed exchange rate
 
 // Settings
-let currency = 'INR'; // Always use INR
-let conversionRate = USD_TO_INR_FIXED_RATE; // Default rate
+const currency = 'INR'; // Always using INR
+let conversionRate = USD_TO_INR_FIXED_RATE;
 let lastFetchTime = 0;
 const CACHE_DURATION = 3600000; // 1 hour in milliseconds
 
@@ -18,11 +17,6 @@ function shouldFetchRates() {
   return getCurrentTime() - lastFetchTime > CACHE_DURATION;
 }
 
-// Function to format price in USD
-function formatUSD(price) {
-  return `$${parseFloat(price).toFixed(2)}`;
-}
-
 // Function to format price in INR
 function formatINR(price) {
   const inrPrice = parseFloat(price) * conversionRate;
@@ -34,8 +28,6 @@ function formatPrice(price) {
   return formatINR(price);
 }
 
-// No toggle function needed - always using INR
-
 // Function to update all price displays on the page
 function updateAllPrices() {
   // Update price displays
@@ -45,13 +37,14 @@ function updateAllPrices() {
     // Extract the original USD price (stored as a data attribute)
     let usdPrice = element.getAttribute('data-usd-price');
     
-    // If the data attribute doesn't exist yet, store the original price and remove the currency symbol
+    // If the data attribute doesn't exist yet, store the original price
+    // and remove any currency symbols
     if (!usdPrice) {
-      usdPrice = element.textContent.replace('$', '').replace('₹', '').trim();
+      usdPrice = element.textContent.replace(/[₹$]/g, '').trim();
       element.setAttribute('data-usd-price', usdPrice);
     }
     
-    // Update the displayed price based on the current currency setting
+    // Update the displayed price to INR
     element.textContent = formatPrice(usdPrice);
     
     // Always use INR styling
@@ -59,56 +52,27 @@ function updateAllPrices() {
     element.classList.remove('price-usd');
   });
   
-  // No toggle button in this implementation
-  
-  // Admin form always shows INR
-  
   // Make currency conversion rate available globally for other scripts
   window.currency = currency;
   window.conversionRate = conversionRate;
 }
 
-// Function to fetch latest conversion rates from API
+// Function to fetch latest conversion rates from API (fallback to fixed rate)
 async function fetchConversionRates() {
   try {
-    // Only fetch if we need updated rates
-    if (shouldFetchRates()) {
-      const response = await fetch(CURRENCY_API_URL);
-      
-      if (response.ok) {
-        const data = await response.json();
-        conversionRate = data.rates.INR;
-        lastFetchTime = getCurrentTime();
-        localStorage.setItem('conversionRate', conversionRate.toString());
-        localStorage.setItem('lastFetchTime', lastFetchTime.toString());
-        console.log(`Updated conversion rate: 1 USD = ${conversionRate} INR`);
-      } else {
-        console.warn('Failed to fetch conversion rates, using fixed rate');
-      }
-    }
+    // Update the prices using fixed rate
+    updateAllPrices();
   } catch (error) {
-    console.warn('Error fetching conversion rates, using fixed rate:', error);
+    console.warn('Error in currency conversion:', error);
   }
-  
-  // Update the prices after rate fetch (or using cached/fixed rate)
-  updateAllPrices();
 }
 
 // Initialize currency conversion
 function initCurrencyConversion() {
-  // Try to load cached conversion rate and timestamp
-  const cachedRate = localStorage.getItem('conversionRate');
-  const cachedTimestamp = localStorage.getItem('lastFetchTime');
-  
-  if (cachedRate && cachedTimestamp) {
-    conversionRate = parseFloat(cachedRate);
-    lastFetchTime = parseInt(cachedTimestamp);
-  }
-  
   // No toggle button needed, always using INR
   
-  // Initial fetch of conversion rates and update prices
-  fetchConversionRates();
+  // Initial update of prices
+  updateAllPrices();
 }
 
 // Initialize when the DOM is loaded
