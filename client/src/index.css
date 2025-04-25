@@ -1,0 +1,84 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 221.2 83.2% 53.3%; /* #3B82F6 blue-500 */
+    --primary-foreground: 210 40% 98%;
+    --secondary: 160 84% 39%; /* #10B981 green-500 */
+    --secondary-foreground: 210 40% 98%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 270 76% 63.9%; /* #8B5CF6 purple-500 */
+    --accent-foreground: 240 5.9% 10%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 221.2 83.2% 53.3%;
+    --radius: 0.5rem;
+    --chart-1: 221.2 83.2% 53.3%;
+    --chart-2: 160 84% 39%;
+    --chart-3: 270 76% 63.9%;
+    --chart-4: 20 90% 60%;
+    --chart-5: 40 96% 62%;
+  }
+
+  .dark {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 217.2 91.2% 59.8%; /* #3B82F6 with darker tone */
+    --primary-foreground: 0 0% 98%;
+    --secondary: 156 72% 67.1%; /* #10B981 with lighter tone */
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 266 91% 77.1%; /* #8B5CF6 with lighter tone */
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 217.2 91.2% 59.8%;
+    --chart-1: 217.2 91.2% 59.8%;
+    --chart-2: 156 72% 67.1%;
+    --chart-3: 266 91% 77.1%;
+    --chart-4: 20 90% 70%;
+    --chart-5: 40 96% 72%;
+  }
+  
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased bg-background text-foreground transition-colors duration-300;
+  }
+}
+
+.course-content {
+  @apply prose dark:prose-invert max-w-none prose-headings:text-foreground prose-p:text-foreground prose-strong:text-foreground prose-a:text-primary prose-code:text-accent;
+}
+
+.course-content pre {
+  @apply bg-muted p-4 rounded-md overflow-x-auto;
+}
+
+.course-content code {
+  @apply text-accent px-1 py-0.5 rounded bg-muted dark:bg-muted/50;
+}
+
+.course-content pre code {
+  @apply bg-transparent text-foreground p-0;
+}
