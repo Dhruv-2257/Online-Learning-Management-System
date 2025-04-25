@@ -78,6 +78,22 @@ function updateAllPrices() {
   if (currencyToggleBtn) {
     currencyToggleBtn.textContent = `Switch to ${currency === 'USD' ? 'INR' : 'USD'}`;
   }
+  
+  // Update admin form currency label if it exists
+  const currencyLabel = document.getElementById('currency-label');
+  if (currencyLabel) {
+    currencyLabel.textContent = `(${currency})`;
+  }
+  
+  // Update admin form price symbol if it exists
+  const priceCurrencySymbol = document.getElementById('price-currency-symbol');
+  if (priceCurrencySymbol) {
+    priceCurrencySymbol.textContent = currency === 'INR' ? '₹' : '$';
+  }
+  
+  // Make currency conversion rate available globally for other scripts
+  window.currency = currency;
+  window.conversionRate = conversionRate;
 }
 
 // Function to fetch latest conversion rates from API
